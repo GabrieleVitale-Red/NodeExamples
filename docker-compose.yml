@@ -1,0 +1,14 @@
+version: "1.1"
+services:
+  web:
+    image: "node_app_test"
+    build: .
+    command: npm start
+    ports: 
+      - "3000:3000"
+    depends_on:
+      - "mongo"
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
