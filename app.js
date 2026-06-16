@@ -7,6 +7,7 @@ const mongoose = require('mongoose');
 
 const serverTestRoutes = require('./api/routes/serverTest');
 const mongoCRUDRoutes = require('./api/routes/mongoCRUD');
+const catalogRoutes = require('./api/routes/catalogRoutes');
 
 console.log("Starting connection with mongo!")
 mongoose.connect('mongodb://mongo:'+process.env.MONGO_PORT+'/'+process.env.MONGO_COLLECTION);
@@ -22,6 +23,7 @@ app.use(bodyParser.json());
 //Registering the routes for the services created, our controllers
 app.use('/serverTestRoutes', serverTestRoutes);
 app.use('/mongoCRUDRoutes', mongoCRUDRoutes);
+app.use('/catalogRoutes', catalogRoutes);
 
 
 //Error handling

@@ -115,4 +115,22 @@ router.delete('/deleteElementByID/:idElem',(req, res, next) =>{
 
 });
 
+router.put('/updateElementByID/:idElem',(req, res, next) =>{
+
+    console.log("Mongo collection, updating element by ID. ELement ID is: "+req.params.idElem);
+
+    var newValues = {$set : {
+            testName: req.body.testName,
+            testValue:  req.body.testValue
+        }
+    };
+
+    var query = {_id: req.params.idElem};
+
+    TestModel.updateOne(query, newValues, function(err, res){
+        if (err) throw err;
+        console.log("Update executed!");
+    });
+});
+
 module.exports = router;
