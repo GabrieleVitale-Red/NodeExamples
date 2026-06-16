@@ -83,3 +83,44 @@ describe('GET /catalogRoutes/getAllDescriptions', () => {
         });
     });
 });
+
+describe('GET /catalogRoutes/getAllEndpoints', () => {
+    test('risponde 200', async () => {
+        const res = await request(app).get('/catalogRoutes/getAllEndpoints');
+        expect(res.statusCode).toBe(200);
+    });
+
+    test('restituisce un array con 9 endpoint', async () => {
+        const res = await request(app).get('/catalogRoutes/getAllEndpoints');
+        expect(Array.isArray(res.body)).toBe(true);
+        expect(res.body).toHaveLength(9);
+    });
+
+    test('ogni voce ha i campi obbligatori', async () => {
+        const res = await request(app).get('/catalogRoutes/getAllEndpoints');
+        res.body.forEach(ep => {
+            expect(ep).toHaveProperty('gruppo');
+            expect(ep).toHaveProperty('metodo');
+            expect(ep).toHaveProperty('endpoint');
+            expect(ep).toHaveProperty('parametriPath');
+            expect(ep).toHaveProperty('parametriBody');
+            expect(ep).toHaveProperty('descrizione');
+        });
+    });
+
+    test('i 3 gruppi attesi sono presenti', async () => {
+        const res = await request(app).get('/catalogRoutes/getAllEndpoints');
+        const gruppi = [...new Set(res.body.map(ep => ep.gruppo))];
+        expect(gruppi).toContain('serverTestRoutes');
+        expect(gruppi).toContain('mongoCRUDRoutes');
+        expect(gruppi).toContain('catalogRoutes');
+    });
+
+    test('parametriPath e parametriBody sono array', async () => {
+        const res = await request(app).get('/catalogRoutes/getAllEndpoints');
+        res.body.forEach(ep => {
+            expect(Array.isArray(ep.parametriPath)).toBe(true);
+            expect(Array.isArray(ep.parametriBody)).toBe(true);
+        });
+    });
+});

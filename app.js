@@ -1,4 +1,5 @@
 const express = require('express');
+const path = require('path');
 const app = express();
 
 const morgan = require('morgan');
@@ -12,6 +13,8 @@ const catalogRoutes = require('./api/routes/catalogRoutes');
 console.log("Starting connection with mongo!")
 mongoose.connect('mongodb://mongo:'+process.env.MONGO_PORT+'/'+process.env.MONGO_COLLECTION);
 console.log("Mongo connection status: "+mongoose.connection.readyState=="1" ? "Mongo connection ok!" : "Mongo Connection failure");
+
+app.use(express.static(path.join(__dirname, 'public')));
 
 //Applying morgan middleware
 app.use(morgan('dev'));
